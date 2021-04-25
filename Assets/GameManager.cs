@@ -136,12 +136,19 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (TargetLevel != CurrentLevel) {
-            for (int i = CurrentLevel; i < TargetLevel; i++)
+            int maxLevel = Mathf.Min(Levels.Length, TargetLevel);
+            for (int i = CurrentLevel; i < maxLevel; i++)
             {
                 FinishLevel(Levels[i]);
             }
             CurrentLevel = TargetLevel;
-            LoadLevel(Levels[TargetLevel]);
+            if (TargetLevel > Levels.Length) {
+                Debug.Log("Finish");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("Finish", UnityEngine.SceneManagement.LoadSceneMode.Single);
+                return;
+            } else {
+                LoadLevel(Levels[TargetLevel]);
+            }
         }
    
         var horizontal = Input.GetAxis("Horizontal");
